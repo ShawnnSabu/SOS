@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shake/shake.dart';
 
 void main() {
   runApp(CalculatorApp());
@@ -21,6 +22,30 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
+
+
+ late ShakeDetector _shakeDetector;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize shake detector
+    _shakeDetector = ShakeDetector.autoStart(onPhoneShake: () {
+      setState(() {
+        _sosTriggered = true;
+        _output = "🚨 SOS Triggered by Shake 🚨";
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // Stop shake detector when widget is removed
+    _shakeDetector.stopListening();
+    super.dispose();
+  }
+
   String _output = "";
   String _expression = "";
   bool _sosTriggered = false;
